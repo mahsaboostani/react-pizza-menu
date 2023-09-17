@@ -15,7 +15,7 @@ const pizzaData = [
         ingredients: "Bread with italian olive oil",
         price: 6,
         photoName: "pizzas/image.jpeg",
-        soldOut: false
+        soldOut: true
     }
 ]
 function App() {
@@ -33,9 +33,16 @@ function Menu() {
     const numPizzas = pizzas.length
     return <main className="menu">
         <h2>Our menu</h2>
-        {numPizzas > 0 && <ul>
-            {pizzaData.map((pizza) => (<Pizza pizzaObj={pizza} key={pizza.name} />))}
-        </ul>}
+        {numPizzas > 0 ?
+            <React.Fragment>
+                <p>Italian Pizza</p>
+
+                <ul>
+                    {pizzaData.map((pizza) => (<Pizza pizzaObj={pizza} key={pizza.name} />))}
+                </ul>
+            </React.Fragment>
+            : <p>We still work on our menue</p>
+        }
 
         {/* <Pizza name='Pizza spinachi' ingredient='Tomato, spinach' photoName='pizzas/image.jpeg' price={6} /> */}
 
@@ -47,11 +54,12 @@ function Footer() {
     const closeHour = 22;
     const isOpen = hour >= openHour && hour <= closeHour
     // if (hour >= openHour && hour <= closeHour) alert("er are currently open"); else alert("sorry we are closed")
-    return <footer className="footer">{isOpen &&
+    return <footer className="footer">{isOpen ?
         <div>
             <p>We are currently open until {closeHour}</p>
             <button>Order</button>
         </div>
+        : <p>We happy to welcome you here at {openHour}</p>
 
     }
 
@@ -61,12 +69,13 @@ function Footer() {
 
 }
 
-function Pizza(props) {
-    return <li className="pizza">
-        <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
-        <h2>{props.pizzaObj.name}</h2>
-        <p>{props.pizzaObj.ingredients}</p>
-        <p>{props.pizzaObj.price}</p>
+function Pizza({ pizzaObj }) {
+    //if (pizzaObj.soldOut) return null
+    return <li className={`pizza ${pizzaObj.soldOut ? 'soldOut' : ''}`}>
+        <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? 'SOLD OUT' : pizzaObj.price}</span>
 
 
     </li>
@@ -74,4 +83,4 @@ function Pizza(props) {
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
-root.render(<React.StrictMode><App /></React.StrictMode>)
+root.render(<React.StrictMode><App /></React.StrictMode>) 
