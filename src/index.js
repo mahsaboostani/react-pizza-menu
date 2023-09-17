@@ -9,6 +9,13 @@ const pizzaData = [
         price: 6,
         photoName: "pizzas/image.jpeg",
         soldOut: false
+    },
+    {
+        name: "pizza spinachi",
+        ingredients: "Bread with italian olive oil",
+        price: 6,
+        photoName: "pizzas/image.jpeg",
+        soldOut: false
     }
 ]
 function App() {
@@ -22,25 +29,47 @@ function Header() {
 }
 
 function Menu() {
-    return <main className="menu"><h2>Our menu</h2><Pizza /></main >
+    const pizzas = pizzaData
+    const numPizzas = pizzas.length
+    return <main className="menu">
+        <h2>Our menu</h2>
+        {numPizzas > 0 && <ul>
+            {pizzaData.map((pizza) => (<Pizza pizzaObj={pizza} key={pizza.name} />))}
+        </ul>}
+
+        {/* <Pizza name='Pizza spinachi' ingredient='Tomato, spinach' photoName='pizzas/image.jpeg' price={6} /> */}
+
+    </main >
 }
 function Footer() {
     const hour = new Date().getHours()
-    const openHour = 12;
+    const openHour = 8;
     const closeHour = 22;
     const isOpen = hour >= openHour && hour <= closeHour
     // if (hour >= openHour && hour <= closeHour) alert("er are currently open"); else alert("sorry we are closed")
-    return <footer className="footer">{new Date().toLocaleTimeString()}. We are currently open</footer>
+    return <footer className="footer">{isOpen &&
+        <div>
+            <p>We are currently open until {closeHour}</p>
+            <button>Order</button>
+        </div>
+
+    }
+
+    </footer>
+
     // return React.createElement('footer', null, 'Were currently open')
 
 }
 
-function Pizza() {
-    return <div className="pizza">
-        <img src="pizzas/image.jpeg" alt="Pizza spinachi" />
-        <h2>Pizza spinachi</h2>
-        <p>tomato, olive oil</p>
-    </div>
+function Pizza(props) {
+    return <li className="pizza">
+        <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+        <h2>{props.pizzaObj.name}</h2>
+        <p>{props.pizzaObj.ingredients}</p>
+        <p>{props.pizzaObj.price}</p>
+
+
+    </li>
 
 }
 
